@@ -11,6 +11,21 @@ jobs:
     steps:
       - name: Wait for DNS/HTTPS propagation
         run: sleep 20
+      - name: Check HTTP redirects to HTTPS
+        run: |
+          URL="http://hexuetong.asia/"
+          CODE=$(curl -sSLI -o /dev/null -w "%{http_code}" "$URL")
+          LOC=$(curl -sSLI "$URL" | awk -F': ' '/^Location:/ {print $2}' | tr -d '\r')
+          echo "HTTP status: $CODE"
+          echo "Location: $LOC"
+          case "$CODE" in
+            301|302|308) ;;
+            *) echo "HTTP does not redirect"; exit 1;;
+          esac
+          case "$LOC" in
+            https://hexuetong.asia/*) ;;
+            *) echo "Redirect target is not HTTPS for hexuetong.asia"; exit 1;;
+          esac
       - name: Check HTTPS root
         run: |
           URL="https://hexuetong.asia/"
