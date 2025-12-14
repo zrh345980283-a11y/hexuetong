@@ -22,8 +22,8 @@ jobs:
       - name: Check videos
         run: |
           ROOT="https://zrh345980283-a11y.github.io/zam"
-          V1="$ROOT/video/细胞核的分布及数量.mp4"
-          V2="$ROOT/video/NB演示伞藻嫁接及核移植实验.mp4"
+          V1="$ROOT/video/prep.mp4"
+          V2="$ROOT/video/algae_nb.mp4"
           for u in "$V1" "$V2"; do
             CODE=$(curl -sSLI -o /dev/null -w "%{http_code}" "$u")
             echo "Video $u status: $CODE"
